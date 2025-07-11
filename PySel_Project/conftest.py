@@ -5,15 +5,27 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def driver():
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    service = Service(ChromeDriverManager().install())
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option("useAutomationExtension", False)
 
-    driver = webdriver.Chrome(service=service, options=options)
+
+    #service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(options=options)
+    
+    driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+    "source": "Object.defineProperty(navigator, 'webdriver', { get: () => undefined })"
+    })
+
+
+    #driver = webdriver.Chrome(service=service, options=options)
 
     driver.implicitly_wait(5)
     yield driver
