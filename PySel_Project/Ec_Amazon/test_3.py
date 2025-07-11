@@ -73,10 +73,10 @@ class select_tshirt:
         print("selected xl size") 
         time.sleep(10)
         add_cart = self.driver.find_element(*self.add_to_cart)
-        print("searching for button") 
+        #print("searching for button") 
         
         self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", add_cart)
-        print("located button") 
+        #print("located button") 
         time.sleep(10)
         self.driver.execute_script("arguments[0].click();", add_cart)
         print("added 👕 to 🛒")
